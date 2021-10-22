@@ -9,7 +9,6 @@ namespace ProjectPartA_A1
             public string Name;
             public decimal Price;
             static public decimal total;
-
         }
 
         const int _maxNrArticles = 10;
