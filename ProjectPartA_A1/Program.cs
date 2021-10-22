@@ -9,6 +9,7 @@ namespace ProjectPartA_A1
             public string Name;
             public decimal Price;
             static public decimal total;
+
         }
 
         const int _maxNrArticles = 10;
@@ -22,7 +23,6 @@ namespace ProjectPartA_A1
             ReadArticles();
             PrintReciept();
         }
-
         private static void ReadArticles()
         {
 
@@ -45,7 +45,7 @@ namespace ProjectPartA_A1
                         continue;
                     }
                 }
-                catch (OverflowException) //if the number are too large
+                catch (OverflowException) //if the number are way too large 
                 {
                     Console.WriteLine("Value too large, number of articles must be between 1 and 10");
                     continue;
@@ -59,14 +59,15 @@ namespace ProjectPartA_A1
                 nrOfArticlesValid = false;
             }
 
+            
             for (int i = 0; i < nrArticles; i++)
             {
-                Console.WriteLine($"Please enter name and price of the article #{i} in the format name;price");
+                Console.WriteLine($"Please enter name and price of the article #{i+1} in the format name;price");
                 String articleInfo = Console.ReadLine();
                 Console.WriteLine();
                 if (!articleInfo.Contains(';'))
                 {
-                    Console.WriteLine("Use semicolon as seperator");
+                    Console.WriteLine("Use ; as seperator between article and price");
                     i--;
                     continue;
                 }
@@ -78,7 +79,7 @@ namespace ProjectPartA_A1
                     i--;
                     continue;
                 }
-                bool checkValue = decimal.TryParse(article[1], out decimal f);
+                bool checkValue = decimal.TryParse(article[1], out decimal price);
                 if (!checkValue)
                 { 
                     Console.WriteLine("Price error");
@@ -86,32 +87,28 @@ namespace ProjectPartA_A1
                     continue;
                 }
                 Article.total = Article.total + Convert.ToDecimal(article[1]);
-                Article article1 = new Article { Name = article[0], Price = Convert.ToDecimal(article[1]) };  
-                articles[i] = article1; //Skapat en instans av en artikel
+                Article article1 = new Article {Name = article[0], Price = Convert.ToDecimal(article[1])};  
+                articles[i] = article1; 
             }
 
         }
         private static void PrintReciept()
         {
-            Console.WriteLine();
-            Console.WriteLine("\nReceipt pursched articles");
+            Console.WriteLine("Receipt pursched articles");
             DateTime ReceiptdateTime = DateTime.Now;
             Console.Write("Purchase date:");
             Console.WriteLine(ReceiptdateTime.ToString("MM/dd/yyy HH:mm:ss"));
-            Console.WriteLine();
             Console.Write($"\nNumber of items purchased:");
             Console.WriteLine(nrArticles);
             Console.WriteLine();
-            Console.WriteLine("\n{0,-50} {1,5}", "# Name", "  Price");
+            Console.WriteLine("{0,-50} {1,5}", "# Name", "  Price");
 
             for (int i = 0; i < nrArticles; i++)
             {      
-
-                Console.WriteLine($"{i + 1} {articles[i].Name,-50} {articles[i].Price,-50:C2}");
-                //Your code to print out a reciept 
+                Console.WriteLine($"{i + 1} {articles[i].Name,-50} {articles[i].Price,-50:C2}");              
             }
 
-            Console.WriteLine($"\n{"Total purchased",-52} {Article.total,-70:C2}");
+            Console.WriteLine($"{"\nTotal purchased",-52} {Article.total,-70:C2}");
             Console.WriteLine($"{"Includes VAT 25%",-51}  {Article.total * _vat,-70:C2}");
            
         }
